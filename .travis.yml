@@ -7,7 +7,7 @@ env:
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
   - openssl aes-256-cbc -K $encrypted_0d1c116c53b8_key -iv $encrypted_0d1c116c53b8_iv
-    -in md-kubernetes-b424286e39a6.json.enc -out ~\/Downloads/md-kubernetes-b424286e39a6.json
+    -in md-kubernetes-b424286e39a6.json.enc -out md-kubernetes-b424286e39a6.json
     -d
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
