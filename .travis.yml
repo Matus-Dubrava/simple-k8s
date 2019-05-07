@@ -1,3 +1,30 @@
+# sudo: required
+# services:
+#   - docker
+# env:
+#   global:
+#     - SHA=$(git rev-parse HEAD)
+#     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
+# before_install:
+#   - openssl aes-256-cbc -K $encrypted_0d1c116c53b8_key -iv $encrypted_0d1c116c53b8_iv -in service-account.json.enc -out service-account.json -d
+#   - curl https://sdk.cloud.google.com | bash > /dev/null;
+#   - source $HOME/google-cloud-sdk/path.bash.inc
+#   - gcloud components update kubectl
+#   - gcloud auth activate-service-account --key-file service-account.json
+#   - gcloud config set project md-kubernetes
+#   - gcloud config set compute/zone us-west1-a
+#   - gcloud container clusters get-credentials multi-cluster
+#   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
+#   - docker build -t matusdubrava/react-test -f ./client/Dockerfile.dev ./client
+# scripts:
+#   - docker run matusdubrava/react-test npm run test -- --coverage
+
+# deploy:
+#   provider: script
+#   script: bash ./deploy.sh
+#   on:
+#     branch: master
+
 sudo: required
 services:
   - docker
@@ -6,9 +33,7 @@ env:
     - SHA=$(git rev-parse HEAD)
     - CLOUDSDK_CORE_DISABLE_PROMPTS=1
 before_install:
-  - openssl aes-256-cbc -K $encrypted_0d1c116c53b8_key -iv $encrypted_0d1c116c53b8_iv
-    -in service-account.json.enc -out service-account.json
-    -d
+  - openssl aes-256-cbc -K $encrypted_0d1c116c53b8_key -iv $encrypted_0d1c116c53b8_iv -in service-account.json.enc -out service-account.json -d
   - curl https://sdk.cloud.google.com | bash > /dev/null;
   - source $HOME/google-cloud-sdk/path.bash.inc
   - gcloud components update kubectl
@@ -18,8 +43,9 @@ before_install:
   - gcloud container clusters get-credentials multi-cluster
   - echo "$DOCKER_PASSWORD" | docker login -u "$DOCKER_USERNAME" --password-stdin
   - docker build -t matusdubrava/react-test -f ./client/Dockerfile.dev ./client
-scripts:
-  - docker run matusdubrava/react-test npm run test -- --coverage
+
+script:
+  - docker run matusdubrava/react-test npm test -- --coverage
 
 deploy:
   provider: script
